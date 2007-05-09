@@ -6,15 +6,14 @@ start(Domain, Email, Password, Room) ->
     register(tinderl, self()), 
     process_flag(trap_exit, true), 
     Cmd = lists:flatten(io_lib:format("ruby ./tinderl.rb ~s ~s ~s ~s", [Domain, Email, Password, Room])),
-    Port = open_port({spawn, Cmd}, [{packet, 2}, use_stdio, exit_status]), 
+    Port = open_port({spawn, Cmd}, [{packet, 4}, use_stdio, exit_status, binary]), 
     port_loop(Port) 
   end). 
 
 stop() -> tinderl ! stop. 
 
-speak(String) -> tinderl ! {speak, self(), String}.
-paste(String) -> tinderl ! {paste, self(), String}.
-
+speak(String) when is_binary(String) -> tinderl ! {speak, self(), String}.
+paste(String) when is_binary(String) -> tinderl ! {paste, self(), String}.
 
 port_loop(Port) ->
   receive
