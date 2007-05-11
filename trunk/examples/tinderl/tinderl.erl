@@ -12,7 +12,11 @@ start(Domain, Email, Password, Room) ->
 
 stop() -> tinderl ! stop. 
 
+
+speak(String) when is_list(String) -> speak(list_to_binary(String));
 speak(String) when is_binary(String) -> tinderl ! {speak, self(), String}.
+
+paste(String) when is_list(String) -> speak(list_to_binary(String));
 paste(String) when is_binary(String) -> tinderl ! {paste, self(), String}.
 
 port_loop(Port) ->
