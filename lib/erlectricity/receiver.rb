@@ -1,6 +1,5 @@
 module Erlectricity
 class Receiver
-  include Conditions
   
   attr_accessor :port
   attr_accessor :parent
@@ -13,7 +12,7 @@ class Receiver
     @port = port
     @parent = parent
     @matchers = []
-    instance_eval &block if block
+    block.call self if block
   end
   
   def process(arg)
@@ -27,8 +26,14 @@ class Receiver
     end
   end
   
-  def match(*args, &block)
-    args = args.map{|a| a.is_a?(Condition) ? a : StaticCondition.new(a)}
+  def when(*args, &block)
+    args = args.map do |a| 
+      case a
+      when Condition then a 
+      when Class then TypeCondition.new(a)
+      else StaticCondition.new(a)
+      end
+    end
     
     args = args.first if args.length == 1
     @matchers << Matcher.new(self, args, block)

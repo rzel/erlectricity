@@ -67,7 +67,3 @@ context "a matcher whose matcher is an array" do
     matcher.matches?(:foo).should == false
   end
 end
-
-context "a matcher" do
-  
-end

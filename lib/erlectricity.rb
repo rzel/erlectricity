@@ -9,7 +9,6 @@ require 'erlectricity/encoder'
 
 require 'erlectricity/port'
 require 'erlectricity/matcher'
-require 'erlectricity/match_context'
 
 require 'erlectricity/condition'
 require 'erlectricity/conditions/hash'
@@ -21,3 +20,5 @@ require 'erlectricity/receiver'
 require 'erlectricity/errors/erlectricity_error'
 require 'erlectricity/errors/decode_error'
 require 'erlectricity/errors/encode_error'
+
+Erl = Erlectricity
