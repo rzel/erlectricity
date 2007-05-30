@@ -1,48 +1,51 @@
 module Erlectricity
   class Condition
-    attr_accessor :binding_name
   
-    def initialize(binding_name=nil)
-      self.binding_name = binding_name
+    def initialize
     end
   
-    def bindings_for(arg)
-      {}
+    def binding_for(arg)
+      nil
     end
   
     def satisfies?(arg)
       false
     end
-  
+    
+    alias === satisfies?
   end
 
   module Conditions
-    def atom(name=nil)
-      TypeCondition.new(Symbol, name)
+    def atom()
+      TypeCondition.new(Symbol)
     end
   
-    def any(name=nil)
-      TypeCondition.new(Object, name)
+    def any()
+      TypeCondition.new(Object)
     end
   
-    def number(name=nil)
-      TypeCondition.new(Fixnum, name)
+    def number()
+      TypeCondition.new(Fixnum)
     end
   
-    def pid(name=nil)
-      TypeCondition.new(Erlectricity::Pid, name)
+    def pid()
+      TypeCondition.new(Erlectricity::Pid)
     end
   
-    def string(name=nil)
-      TypeCondition.new(String, name)    
+    def string()
+      TypeCondition.new(String)   
     end
   
-    def list(name=nil)
-      TypeCondition.new(Array, name)    
+    def list()
+      TypeCondition.new(Array) 
     end
   
-    def hash(name=nil)
-      HashCondition.new(name)
+    def hash()
+      HashCondition.new()
     end
   end
+  
+  extend Conditions
 end
+
+Any = Object

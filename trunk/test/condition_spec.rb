@@ -7,16 +7,16 @@ context "Erlectricity::StaticConditions" do
     Erlectricity::StaticCondition.new(3).satisfies?(3).should == true
   end
   
-  specify "should not satisfy on diffeent values" do
+  specify "should not satisfy on different values" do
     Erlectricity::StaticCondition.new(:foo).satisfies?("foo").should == false
     Erlectricity::StaticCondition.new([:foo]).satisfies?(:foo).should == false
     Erlectricity::StaticCondition.new(Object.new).satisfies?(Object.new).should == false
     Erlectricity::StaticCondition.new(3).satisfies?(3.0).should == false
   end
   
-  specify "should not produce any bindings, even if a name is supplied" do
-    s = Erlectricity::StaticCondition.new(:foo, :bound_name)
-    s.bindings_for(:foo).should == {}
+  specify "should not produce any bindings" do
+    s = Erlectricity::StaticCondition.new(:foo)
+    s.binding_for(:foo).should == nil
   end
 end
 
@@ -42,17 +42,12 @@ context "Erlectricity::TypeConditions" do
     Erlectricity::TypeCondition.new(Fixnum).satisfies?(3.0).should == false
   end
   
-  specify "should bind the arg to the name specified with no transormations" do
-    s = Erlectricity::TypeCondition.new(Symbol, :bound_name)
-    s.bindings_for(:foo).should == {:bound_name => :foo}
-    s.bindings_for(:bar).should == {:bound_name => :bar}
-  end
-  
-  specify "should not bind anything if no binding name is specified" do
-    
+  specify "should bind the arg with no transormations" do
     s = Erlectricity::TypeCondition.new(Symbol)
-    s.bindings_for(:foo).should == {}
+    s.binding_for(:foo).should == :foo
+    s.binding_for(:bar).should == :bar
   end
+
 end
 
 context "Erlectricity::HashConditions" do
@@ -71,8 +66,8 @@ context "Erlectricity::HashConditions" do
      Erlectricity::HashCondition.new.satisfies?(3.0).should == false
   end
   
-  specify "should product a binder" do
-    s = Erlectricity::HashCondition.new(:bound_name)
-    s.bindings_for([[:foo, 3], [:bar, [3,4,5]]]).should == {:bound_name => {:foo => 3, :bar => [3,4,5] }}
+  specify "should bind to a Hash" do
+    s = Erlectricity::HashCondition.new()
+    s.binding_for([[:foo, 3], [:bar, [3,4,5]]]).should == {:foo => 3, :bar => [3,4,5] }
   end
 end

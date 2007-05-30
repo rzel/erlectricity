@@ -1,13 +1,18 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
+require 'erlectricity'
 require 'rubygems'
 require 'test/unit'
 require 'test/spec'
-require 'erlectricity'
 
 class Test::Unit::TestCase
   
   def run_erl(code)
     `erl -noshell -eval 'A = #{code.split.join(' ')}, io:put_chars(A).' -s erlang halt`
+  end
+  
+  def encode_packet(code)
+    bin = run_erl("term_to_binary(#{code})")
+    [bin.length, bin].pack("Na#{bin.length}")
   end
   
   def word_length

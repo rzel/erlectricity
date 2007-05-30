@@ -10,10 +10,8 @@ class Matcher
   end
   
   def run(arg)
-    context = MatchContext.new(self.receiver) 
-
-    populate_context context, arg
-    context.instance_eval &block
+    args = get_bound arg
+    block.call *args
   end
   
   def matches?(arg)
@@ -28,33 +26,13 @@ class Matcher
   
 
   private
-  def populate_context(context, arg)
+  
+  def get_bound(arg)
     if @condition.is_a?(Array) && arg.is_a?(Array)
-      @condition.zip(arg).all?{|l,r| set_binding(context, l, r)}
+      @condition.zip(arg).map{|l,r| l.binding_for r}.compact
     else
-      set_binding(context, condition, arg)
+      @condition.binding_for(arg)
     end
-  end
-  
-  def set_binding(context, condition, arg)
-    condition.bindings_for(arg).each do |k, v|
-      add_to_context(context, k, v)
-    end
-  end
-  
-  def add_to_context(context, name, value)
-    return if name.nil?
-    
-    context.instance_eval <<-EOS
-      def #{name}
-        @#{name}
-      end
-      def #{name}= (value)
-        @#{name} = value
-      end
-    EOS
-    
-    context.send(:"#{name}=", value)
   end
 end
 end

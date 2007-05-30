@@ -6,10 +6,9 @@ class HashCondition < Condition
     arg.all?{|x| x.class == Array && x.length == 2}
   end
   
-  def bindings_for(arg)
-    return {} unless self.binding_name
+  def binding_for(arg)
     flattened = arg.inject([]){|memo, kv| memo + kv}
-    {self.binding_name => Hash[*flattened]}
+    Hash[*flattened]
   end
 end
 end

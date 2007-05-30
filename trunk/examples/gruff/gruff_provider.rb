@@ -3,34 +3,34 @@ require 'erlectricity'
 require 'rubygems'
 require 'gruff'
 
-receive do
+receive do |f|
   
   
     
-  match(:plot, string(:name), atom(:style), string(:font)) do
+  f.when(:plot, String, Symbol, String) do |name, style, font|
     graph = Gruff.const_get(style).new
     graph.title = name
     graph.font = font
     graph.legend_font_size = 10
     
     
-    receive do
-      match(:data, atom(:name), list(:points)) do
+    f.receive do |g|
+      g.when(:data, Symbol, Array) do |name, points|
         graph.data name, points
-        receive_loop
+        g.receive_loop
       end
   
-      match(:labels, hash(:label_data)) do
+      g.when(:labels, Erl.hash) do |label_data|
         graph.labels = label_data
-        receive_loop
+        g.receive_loop
       end
   
-      match(:end){ :ok }
+      g.when(:end){ :ok }
     end
     
     
-    send! :result, graph.to_blob
-    receive_loop
+    f.send! :result, graph.to_blob
+    f.receive_loop
   end
     
 end
