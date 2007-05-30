@@ -1,6 +1,6 @@
 $:.unshift(File.dirname(__FILE__) + "/../../lib/")
-require 'rubygems'
 require 'erlectricity'
+require 'rubygems'
 require 'gruff'
 
 receive do
