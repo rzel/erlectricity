@@ -1,16 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
-context "The byte reader attached to decoder" do
-  specify "should not advance the stream when peeking unless there arent enough bytes available" do
-    @decoder = Erlectricity::Decoder.new(StringIO.new('abcdefghijklmnopqrstuvwxyz'))
-    100.times{ @decoder.peek_1.should == 'a'[0] }
-    100.times{ @decoder.peek_2.should == 'ab'.unpack("n").first }
-  end
-end
-
 context "When unpacking from a binary stream" do
   setup do
-    @decoder = Erlectricity::Decoder.new(nil)
   end
   
   specify "an erlang atom should decode to a ruby symbol" do
@@ -127,7 +118,6 @@ context "When unpacking from a binary stream" do
   
   def get(str)
     bin = run_erl("term_to_binary(#{str})")
-    @decoder.in = StringIO.new(bin)
-    @decoder.read_any
+    Erlectricity::Decoder.read_any_from(bin)
   end
 end

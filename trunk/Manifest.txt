@@ -1,3 +1,4 @@
+History.txt
 Manifest.txt
 README.txt
 Rakefile
@@ -8,6 +9,8 @@ examples/gruff/stat_run.erl
 examples/gruff/stat_writer.erl
 examples/tinderl/tinderl.erl
 examples/tinderl/tinderl.rb
+ext/decoder.c
+ext/extconf.rb
 lib/erlectricity.rb
 lib/erlectricity/condition.rb
 lib/erlectricity/conditions/hash.rb
@@ -19,7 +22,6 @@ lib/erlectricity/encoder.rb
 lib/erlectricity/errors/decode_error.rb
 lib/erlectricity/errors/encode_error.rb
 lib/erlectricity/errors/erlectricity_error.rb
-lib/erlectricity/match_context.rb
 lib/erlectricity/matcher.rb
 lib/erlectricity/port.rb
 lib/erlectricity/receiver.rb

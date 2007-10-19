@@ -4,7 +4,14 @@ require 'erlectricity/types/new_reference'
 require 'erlectricity/types/pid'
 require 'erlectricity/types/function'
 
-require 'erlectricity/decoder'
+begin
+  #try to load the decoder C extension
+  require 'decoder'
+rescue LoadError
+  #load the pure ruby instead
+  require 'erlectricity/decoder'  
+end
+
 require 'erlectricity/encoder'
 
 require 'erlectricity/port'
