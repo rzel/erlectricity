@@ -88,6 +88,13 @@ context "When packing to a binary stream" do
     write_any([3] * 512).should == get_erl_with_magic("{#{([3] * 512).join(',')}}")
   end
   
+  specify "An Erlectricity::List should by default be written as a list" do
+    write_any(Erl::List.new([1,2,300])).should == get_erl_with_magic("[1,2,300]")
+    write_any(Erl::List.new([300] * 255)).should == get_erl_with_magic("[#{([300] * 255).join(',')}]")
+    write_any(Erl::List.new([300] * 256)).should == get_erl_with_magic("[#{([300] * 256).join(',')}]")
+    write_any(Erl::List.new([300] * 512)).should == get_erl_with_magic("[#{([300] * 512).join(',')}]")
+  end
+  
   specify "An array written with write_list should encode as erlang would a list" do
     get{@encoder.write_list [1,2,300]}.should == get_erl("[1,2,300]")
     get{@encoder.write_list [300] * 255}.should == get_erl("[#{([300] * 255).join(',')}]")

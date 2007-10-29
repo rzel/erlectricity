@@ -19,6 +19,7 @@ class Encoder
       when Float then write_float(obj)
       when Erlectricity::NewReference then write_new_reference(obj)
       when Erlectricity::Pid then write_pid(obj)
+      when Erlectricity::List then write_list(obj)
       when Array then write_tuple(obj)
       when String then write_binary(obj)
       else
@@ -106,7 +107,6 @@ class Encoder
       fail(data) unless data.is_a? Array
       write_1 NIL and return if data.empty?
       
-      #NOTE: we do not ever encode as the string format.      
       write_1 LIST
       write_4 data.length
       data.each{|e| write_any_raw e }
