@@ -3,6 +3,7 @@ require 'erlectricity/constants'
 require 'erlectricity/types/new_reference'
 require 'erlectricity/types/pid'
 require 'erlectricity/types/function'
+require 'erlectricity/types/list'
 
 begin
   #try to load the decoder C extension
